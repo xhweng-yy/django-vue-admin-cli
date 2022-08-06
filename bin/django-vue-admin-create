@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+// 命令行解析
+const path = require("path");
+const program = require('commander');//cmd控制台交互
+const ora = require('ora');//进度条
+const chalk = require('chalk');//给提示文案着色
+const download = require('download-git-repo');//拉取github项目
+const fs = require('fs');
+const minimist = require('minimist')//轻量级命令行参数解析引擎
+const figlet = require("figlet");//酷炫的文字工具
+const printer = require("lolcatjs");//生成颜色
+let spinner = ora('downloading template ...')
+spinner.start()
+// 获取cli版本号
+//展示django-vue-admin logo
+const logotext = figlet.textSync("django-vue-admin-cli");
+const logotextColor = printer.fromString(logotext);
+//提取version
+const version=`${logotextColor} ${require('../package').version}`;
+program
+    .version(version)
+    .usage('<command> [options]')
+
+// 成功和失败文案着色
+const success = chalk.blueBright;
+const error = chalk.bold.red;
+//地址有多种写法，这个大家可以查看download-git-repo相关API
+const templateUrl = 'github:xhweng-yy/django-vue3-admin#master'
+//下载到指定目录，名称基于用户输入的appName
+const appName = 'django-vue3-admin'
+const dir = path.join(process.cwd(),appName);
+
+download(templateUrl, dir, function (err) {
+    // 拉取项目代码
+    if (!err) {
+        //成功的逻辑
+         spinner.succeed(success('拉取成功'));
+          //更改 package.json 中的 name 和版本号，实现参照后文
+          changePackage(appName);
+          spinner.succeed(success('项目初始化成功'));
+          spinner.succeed(success(`cd ${appName}`));
+          spinner.succeed(success('cd web/'));
+          spinner.succeed(success('npm install && npm run dev'));
+    } else {
+        //失败的逻辑 
+        console.log(err);
+        spinner.fail(error('拉取失败'));
+    }
+});
+// 替换模板package.json文件的name字段
+const changePackage = (appName) => {
+  fs.readFile(`${process.cwd()}/${appName}/web/package.json`, (err, data) => {
+      if (err) throw err;
+      let _data = JSON.parse(data.toString());
+      _data.name = appName;
+      _data.version = '1.0.0';
+      let str = JSON.stringify(_data, null, 4);
+      fs.writeFile(`${process.cwd()}/${appName}/web/package.json`, str, function (err) {
+          if (err) throw err;
+      })
+  });
+};

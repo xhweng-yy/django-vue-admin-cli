@@ -1,0 +1,30 @@
+{
+  "name": "django-vue-admin-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "django-vue-admin": "bin/django-vue-admin",
+    "django-vue-admin-create": "bin/django-vue-admin-create",
+    "django-vue-admin-list": "bin/django-vue-admin-list",
+    "django-vue-admin-add": "bin/django-vue-admin-add",
+    "django-vue-admin-delete": "bin/django-vue-admin-delete"
+  },
+  "author": "xhw",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^2.19.0",
+    "download-git-repo": "^1.1.0",
+    "figlet": "^1.5.2",
+    "fs": "^0.0.1-security",
+    "handlebars": "^4.7.7",
+    "inquirer": "^6.2.2",
+    "lolcatjs": "^2.4.1",
+    "minimist": "^1.2.6",
+    "ora": "^3.2.0"
+  }
+}

@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+const tplObj = require(`../template`)
+console.log(tplObj)
